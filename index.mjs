@@ -23,13 +23,13 @@ app.get("/findOne", async (req, res) => {
     query.beds = parseInt(req.query.beds, 10);
   
     const projection = {
-      _id: 1,
+      _id: 0,
       listing_url: 1,
       name: 1,
       summary: 1,
       property_type: 1,
       bedrooms: 1,
-      beds: 1
+      beds: 1,
     };
     const airbnb = await airbnbs.findOne(query, {projection});
     console.log(airbnb);

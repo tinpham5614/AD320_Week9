@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
+  <title>HealthFinder</title>
+</head>
+<body>
+  <h1> Health Finder </h1>
+  <form>
+    <input id="age" type="number" value="0">
+    <select id="sex">
+      <option>Male</option>
+      <option>Female</option>
+    </select>
+  </form>
+  <button id="button" onclick="fetchHealthFacts()"> Search </button>
+  <p id="num_facts_number"></p>
+  <h3><ul id="health-facts"></ul></h3>
+  <div id="img"></div>
+
+  <script>
+    async function fetchHealthFacts() {
+
+      const age_text = document.getElementById("age").value;
+      const age_number = parseInt(age_text, 10);
+
+      const sex = document.getElementById("sex").value;
+
+      const api_endpoint = `https://health.gov/myhealthfinder/api/v3/myhealthfinder.json?lang=en&age=${age_number}&sex=${sex}`;
+      const response = await fetch(api_endpoint);
+
+      const json_response = await response.json()
+      const resources = json_response.Result.Resources.all.Resource;
+      const ul_health_facts = document.getElementById("health-facts");
+      ul_health_facts.innerHTML = "";
+      console.log(resources);
+      const resourcesArray = [];
+      //check if resources contains an element with a title or not
+      resources.forEach(element => {
+        if (resourcesArray.filter(e => e.Title === element.Title).length === 0  ) {
+          resourcesArray.push(element);
+        }
+      });
+      resourcesArray.forEach(element => {
+        num_facts_number.innerText = "Number of recommendations: " + resourcesArray.length + "";
+        const li = document.createElement('li');
+        li.innerText = element.Title;
+        ul_health_facts.appendChild(li);  
+      });
+    }
+  </script>
+</body>
+</html>
+
+<!--
+
+  Use health.gov api to get recommendations for patients with covid-19
+  Search age and sex to get recommendations
+  input age and sex and button
+  output recommendations
+
+
+-->

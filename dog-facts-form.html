@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dog Facts Form</title>
+  </head>
+  <body>
+    <main>
+        <h1>Dog Facts Form</h1>
+        <form>
+            <input id="num-facts" type="number" value="1">
+        </form>
+        <button onclick="fetchDogFacts()"> get dog facts </button>
+        <ul id="dog-facts"></ul>
+          
+    </main>
+    <script>
+      async function fetchDogFacts() {
+
+        const num_facts_text = document.getElementById("num-facts").value;
+        const num_facts_number = parseInt(num_facts_text, 10);
+
+        const api_endpoint = `https://dog-api.kinduff.com/api/facts?number=${num_facts_text}`;
+        const response = await fetch(api_endpoint);
+
+        const json_response = await response.json()
+        const ul_dog_facts = document.getElementById("dog-facts");
+        ul_dog_facts.innerHTML = "";
+
+        for (let i=0; i < num_facts_number; i++) {
+            const li = document.createElement('li');
+            li.innerText = json_response.facts[i];
+            ul_dog_facts.appendChild(li);
+        }
+      }
+    </script>
+  </body>
+</html>

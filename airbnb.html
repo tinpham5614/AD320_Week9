@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<main> 
+    <h1>AirBnB Search</h1>
+    <form>
+        <input id="property_type" type="text" placeholder="Property Type">
+        <input id="bedrooms" type="number" placeholder="Bedrooms">
+        <input id="beds" type="number" placeholder="Beds">
+    </form>
+    <button onclick="fetchAirBnB()">Search</button>
+    <ul id="airbnb"></ul>
+</main>
+<script>
+    
+
+    async function fetchAirBnB() {
+
+        const property_type = document.getElementById("property_type").value;
+        const bedrooms = document.getElementById("bedrooms").value;
+        const bedrooms_number = parseInt(bedrooms, 10);
+        const beds = document.getElementById("beds").value;
+        const beds_number = parseInt(beds, 10);
+
+        fetch ("index.mjs")
+        .then(response => response.json())
+        .then(data => data.appendChild(li))
+        .catch(error => {
+            console.log(error);
+        })
+
+        const ul_airbnb = document.getElementById("airbnb");
+        ul_airbnb.innerHTML = "";
+
+        data.forEach(element => {
+            const li = document.createElement('li');
+            li.innerText = element.name;
+            ul_airbnb.appendChild(li);
+        });
+    }
+</script>
+    
+</body>
+</html>
