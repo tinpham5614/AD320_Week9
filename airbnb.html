@@ -1,50 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-<main> 
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <link rel="stylesheet" href="airbnbstyle.css" />
+    <title>AirBnB Search</title>
+  </head>
+  <body>
     <h1>AirBnB Search</h1>
     <form>
-        <input id="property_type" type="text" placeholder="Property Type">
-        <input id="bedrooms" type="number" placeholder="Bedrooms">
-        <input id="beds" type="number" placeholder="Beds">
+      <input id="property_type" type="text" placeholder="Property Type" />
+      <input id="bedrooms" type="number" placeholder="Bedrooms" />
+      <input id="beds" type="number" placeholder="Beds" />
     </form>
-    <button onclick="fetchAirBnB()">Search</button>
-    <ul id="airbnb"></ul>
-</main>
-<script>
-    
+    <button id="button" onclick="fetchAirBnB()">Search</button>
+    <div id="airbnb">
+      <h4><ul id="airbnb-listing"></ul></h4>
+    </div>
 
-    async function fetchAirBnB() {
-
+    <script>
+      async function fetchAirBnB() {
         const property_type = document.getElementById("property_type").value;
         const bedrooms = document.getElementById("bedrooms").value;
         const bedrooms_number = parseInt(bedrooms, 10);
         const beds = document.getElementById("beds").value;
         const beds_number = parseInt(beds, 10);
+        const query_string = `property_type=${property_type}&bedrooms=${bedrooms_number}&beds=${beds_number}`;
+        const api_endpoint = `http://localhost:3000/findOne/?${query_string}`;
+        //make a fetch request to my backend file
+        const response = await fetch(api_endpoint);
+        const data = await response.json();
+        const airbnb = data.airbnb;
+        console.log(airbnb);
 
-        fetch ("index.mjs")
-        .then(response => response.json())
-        .then(data => data.appendChild(li))
-        .catch(error => {
-            console.log(error);
-        })
-
-        const ul_airbnb = document.getElementById("airbnb");
+        const ul_airbnb = document.getElementById("airbnb-listing");
         ul_airbnb.innerHTML = "";
 
-        data.forEach(element => {
-            const li = document.createElement('li');
-            li.innerText = element.name;
-            ul_airbnb.appendChild(li);
-        });
-    }
-</script>
-    
-</body>
+        const li_listing_url = document.createElement("li");
+        li_listing_url.innerText = "Listing URL: " + airbnb.listing_url;
+        ul_airbnb.appendChild(li_listing_url);
+
+        const li_name = document.createElement("li");
+        li_name.innerText = "Name: " + airbnb.name;
+        ul_airbnb.appendChild(li_name);
+
+        const li_summary = document.createElement("li");
+        li_summary.innerText = "Summary: " + "\n" + airbnb.summary;
+        ul_airbnb.appendChild(li_summary);
+
+        const li_property_type = document.createElement("li");
+        li_property_type.innerText = "Property Type: " + airbnb.property_type;
+        ul_airbnb.appendChild(li_property_type);
+
+        const li_bedrooms = document.createElement("li");
+        li_bedrooms.innerText = "Bedrooms: " + airbnb.bedrooms;
+        ul_airbnb.appendChild(li_bedrooms);
+
+        const li_beds = document.createElement("li");
+        li_beds.innerText = "Beds: " + airbnb.beds;
+        ul_airbnb.appendChild(li_beds);
+
+      }
+    </script>
+  </body>
 </html>

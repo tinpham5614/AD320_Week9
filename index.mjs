@@ -1,6 +1,7 @@
 import { MongoClient } from "mongodb";
 import * as dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
 dotenv.config();
 // Replace the uri string with your connection string.
 // console.log(process.env)
@@ -11,7 +12,10 @@ const db_url = process.env.MONGO_DB_URL;
 const uri = `mongodb+srv://${db_username}:${db_password}@${db_url}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
 const app = express();
+
+
 app.set("port", process.env.PORT || 3000);
+app.use(cors());
 app.get("/findOne", async (req, res) => {
   try {
     const database = client.db("sample_airbnb");
@@ -41,8 +45,6 @@ app.get("/findOne", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-  } finally {
-    await client.close();
   }
 });
 app.use((req, res) => {
