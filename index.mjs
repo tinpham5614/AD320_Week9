@@ -18,14 +18,21 @@ app.set("port", process.env.PORT || 3000);
 app.use(cors());
 app.get("/findOne", async (req, res) => {
   try {
-    const database = client.db("sample_airbnb");
-    const airbnbs = database.collection("listingsAndReviews");
+    await client.connect();
+    console.log("Connected correctly to server");
 
     const query = {};
-    query.property_type = req.query.property_type;
-    query.bedrooms = parseInt(req.query.bedrooms, 10);
-    query.beds = parseInt(req.query.beds, 10);
-  
+    // make database as a query parameter
+    query.database = req.query.database;
+    // make collection as a query parameter
+    query.collection = req.query.collection;
+    // make projection as a query parameter
+    query.projection = req.query.projection;
+    // make sort as a query parameter
+    query.search_term = req.query.search_term;
+
+    const col = client.db(query.database).collection(query.collection);
+    
     const projection = {
       _id: 0,
       listing_url: 1,
@@ -35,14 +42,15 @@ app.get("/findOne", async (req, res) => {
       bedrooms: 1,
       beds: 1,
     };
-    const airbnb = await airbnbs.findOne(query, {projection});
-    console.log(airbnb);
-
+    const data = await col.findOne(query, { projection, sort, limit });
+    console.log(data);
+    
     res.type("json");
     res.status(200);
     res.json({
-      airbnb : airbnb
+      data : data
     });
+    console.log(data);
   } catch (error) {
     console.log(error);
   }
@@ -55,3 +63,4 @@ app.use((req, res) => {
 app.listen(app.get("port"), () => {
   console.log("Express started");
 });
+
