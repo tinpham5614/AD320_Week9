@@ -19,19 +19,20 @@ app.use(cors());
 app.use(express.json());
 app.post("/findOne", async (req, res) => {
   try {   
-    // get the document from the request body
+    // get the data from the request body
     const { database, collection, filter, projection } = req.body;
+
     // connect to the database
     await client.connect();
     const db = client.db(database);
     const col = db.collection(collection);
-    const document = await col.findOne(filter, projection);
+    const data = await col.findOne(filter, projection);
 
     // send the document as a response
     res.type("json");
     res.status(200);
     res.json({
-      document : document
+      data : data
     });
   } catch (error) {
     console.log(error);

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <link rel="stylesheet" href="airbnbstyle.css" />
+    <title>AirBnB</title>
+  </head>
+
+  <body>
+    <h1>Search</h1>
+    <form>
+      <label for="database">Select Database:</label>
+      <select id="database" name="database">
+        <option value="sample_mflix">mflix</option>
+        <option value="sample_restaurants">restaurants</option>
+        <option value="sample_weatherdata">weatherdata</option>
+      </select>
+      <label for="collection">Collection:</label>
+      <select id="collection" name="collection">
+        <option value="movies">Movies</option>
+        <option value="restaurants">Restaurants</option>
+        <option value="data">Weather Data</option>
+      </select>
+
+      <select id="filter" name="filter">
+        <option value="title">title</option>
+        <option value="name">name</option>
+        <option value="callLetters">call letters</option>
+      </select>
+
+      <input type="text" id="search-title" placeholder="Enter here..."/>
+
+      <button type="button" onclick="fetchData()">Search</button>
+    </form>
+
+    <div id="airbnb">
+      <h4>
+        <ul id="airbnb-listing"></ul>
+      </h4>
+    </div>
+
+    <script>
+      async function fetchData() {
+        const database = document.getElementById("database").value;
+        const collection = document.getElementById("collection").value;
+        const filter = document.getElementById("filter").value;
+        const search = document.getElementById("search-title").value;
+        // const projection = document.getElementById("projection").value;
+        const airbnbListing = document.getElementById("airbnb-listing");
+
+        const url = `http://localhost:3000/findOne`;
+        const data = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            collection: collection,
+            database: database,
+            dataSource: "Cluster0",
+            filter: { [filter]: search },
+          }),
+        };
+
+        const response = await fetch(url, data);
+        const json_response = await response.json();
+        const jsondata = json_response.data;
+        console.log(jsondata)
+        // if fmlix database is selected then display the following
+        if (database === "sample_mflix") {
+          airbnbListing.innerHTML = `
+          <li>Title: ${jsondata.title}</li>
+          <li>Year: ${jsondata.year}</li>
+          <li>Released: ${jsondata.released}</li>
+          <li>Director: ${jsondata.directors}</li>
+          <li>Cast: ${jsondata.cast}</li>
+          <li>Genres: ${jsondata.genres}</li>
+          <li>Countries: ${jsondata.countries}</li>
+          `;
+        }
+
+        // if restaurants database is selected then display the following
+          if (database === "sample_restaurants") {
+            airbnbListing.innerHTML = `
+            <li>Name: ${jsondata.name}</li>
+            <li>Borough: ${jsondata.borough}</li>
+            <li>Cuisine: ${jsondata.cuisine}</li>
+            <li>Building: ${jsondata.address.building}</li>
+            <li>Street: ${jsondata.address.street}</li>
+            <li>Zipcode: ${jsondata.address.zipcode}</li>
+            `;
+
+        
+        }
+        // if weatherdata database is selected then display the following
+        if (database === "sample_weatherdata") {
+            airbnbListing.innerHTML = `
+            <li>ID: ${jsondata._id}</li>
+            <li>Type: ${jsondata.type}</li>
+            <li>Air temperature quality: ${jsondata.airTemperature.quality}</li>
+            <li>Air temperature value: ${jsondata.airTemperature.value}</li>
+            <li>Pressure value: ${jsondata.pressure.value}</li>
+            <li>Pressure quality: ${jsondata.pressure.quality}</li>
+            <li>Wind angle: ${jsondata.wind.direction.angle}</li>
+            <li>Wind type: ${jsondata.wind.type}</li>
+            <li>Wind rate: ${jsondata.wind.speed.rate}</li>
+            `;
+          }
+      }
+    </script>
+  </body>
+</html>
