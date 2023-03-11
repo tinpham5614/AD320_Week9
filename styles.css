@@ -1,34 +1,78 @@
+/* airbnbstyle.css */
+
 body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #f5f5f5;
+    background-color: #204055;
     text-align: center;
-    color: #000;
+    padding: 0 400px 0 400px;
 }
-#age {
-    margin-top: 10px;
-    margin-bottom: 10px;
+label {
     font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
 }
 
-#sex {
-    margin-top: 10px;
-    margin-bottom: 10px;
+#database {
     font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+#collection {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-top: 10px;
+
+}
+
+#filter {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-top: 10px;
+
+}
+
+#search-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
 }
 
 #button {
-    margin-top: 10px;
-    margin-bottom: 10px;
     font-size: 20px;
-    cursor: pointer;
-}
-li {
-    list-style-type: none;
-    margin-top: 10px;
+    font-weight: 600;
     margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    padding: 10px 20px 10px 20px;
+    background-color: #148fdc;
+    color: #fff;
+    border: none;
 }
 
-select {
+#button:hover {
+    background-color: #0d5c8d;
+    color: #fff;
+}
+
+h4 {
     font-size: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    margin-bottom: 20px;
 }
